@@ -2,13 +2,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>Login / Sign Up Form</title>
+    <title>Login / Sign Up</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <form class="form" id="login">
-            <h1 class="form__title">Login</h1>
+            <img class = "form__title" src="ScribeSparkTranspLogo.png" height=50px width=auto>
             <div class="form__message form__message--error"></div>
             <div class="form__input-group">
                 <input type="text" class="form__input" id="loginUsername" autofocus placeholder="Username or email">
@@ -18,13 +18,13 @@
                 <input type="password" class="form__input" id="loginPassword" autofocus placeholder="Password">
                 <div class="form__input-error-message"></div>
             </div>
-            <button class="form__button" type="submit">Continue</button>
+            <button class="form__button" type="submit">LOGIN</button>
             <p class="form__text">
-                <a class="form__link" href="./" id="linkCreateAccount">Don't have an account? Create account</a>
+                <a class="form__link" href="./" id="linkCreateAccount">Don't have an account? SIGN UP</a>
             </p>
         </form>
         <form class="form form--hidden" id="createAccount">
-            <h1 class="form__title">Create Account</h1>
+            <img class = "form__title" src="ScribeSparkTranspLogo.png" height=50px width=auto>
             <div class="form__message form__message--error"></div>
             <div class="form__input-group">
                 <input type="text" id="signupUsername" class="form__input" autofocus placeholder="Username">
@@ -42,9 +42,9 @@
                 <input type="password" class="form__input" id="confirmPassword" autofocus placeholder="Confirm password">
                 <div class="form__input-error-message"></div>
             </div>
-            <button class="form__button" type="submit">Continue</button>
+            <button class="form__button" type="submit">SIGN UP</button>
             <p class="form__text">
-                <a class="form__link" href="./" id="linkLogin">Already have an account? Sign in</a>
+                <a class="form__link" href="./" id="linkLogin">Already have an account? LOGIN</a>
             </p>
         </form>
     </div>
