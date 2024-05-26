@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login");
     const createAccountForm = document.querySelector("#createAccount");
 
+    // Load the accounts from localStorage
+    let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
     document.querySelector("#linkCreateAccount").addEventListener("click", e => {
         e.preventDefault();
         loginForm.classList.add("form--hidden");
@@ -43,20 +46,48 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.addEventListener("submit", e => {
         e.preventDefault();
 
-        // Perform your AJAX/Fetch login
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-        const hashedPassword = sha256(password);
+        // Validate the form fields
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
 
-        const storedUsername = localStorage.getItem('username');
-        const storedPassword = localStorage.getItem('password');
+        if (!username) {
+            setInputError(document.getElementById('loginUsername'), "Username is required");
+            return;
+        }
 
-        if (username === storedUsername && hashedPassword === storedPassword) {
-            // Login successful
-            setFormMessage(loginForm, "Login successful");
-        } else {
-            // Login failed
-            setFormMessage(loginForm, "Invalid username/password combination");
+        if (!password) {
+            setInputError(document.getElementById('loginPassword'), "Password is required");
+            return;
+        }
+
+        // Check if the username matches any of the stored accounts
+        const storedAccounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+        let isValidAccount = false;
+
+        for (const account of storedAccounts) {
+            if (username === account.username || username === account.email) {
+                isValidAccount = true;
+
+                // Check if the password matches the stored password
+                if (sha256(password) === account.password) {
+                    // Clear the form
+                    loginForm.reset();
+
+                    // Show success message
+                    setFormMessage(loginForm, "Login successful");
+                    break;
+                    
+                } else {
+                    // Show error message
+                    setFormMessage(loginForm, "Invalid password", "form__message--error");
+                }
+            }
+        }
+
+        if (!isValidAccount) {
+            // Show error message
+            setFormMessage(loginForm, "Invalid username", "form__message--error");
         }
     });
 
@@ -84,17 +115,25 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (password!== confirmPassword) {
+        if (password !== confirmPassword) {
+            setInputError(document.getElementById('signupPassword'), "Passwords do not match");
             setInputError(document.getElementById('confirmPassword'), "Passwords do not match");
             return;
         }
 
-        // Perform your AJAX/Fetch sign up
-        const hashedPassword = sha256(password);
+        // Create a new account
+        const account = {
+            username: username,
+            email: email,
+            password: sha256(password)
+        };
 
-        localStorage.setItem('username', username);
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', hashedPassword);
+        // Add the new account to the array of accounts
+        const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+        accounts.push(account);
+
+        // Save the array of accounts in localStorage
+        localStorage.setItem("accounts", JSON.stringify(accounts));
 
         // Clear the form
         createAccountForm.reset();
@@ -105,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Redirect to login screen
         setTimeout(() => {
             window.location.href = "index.html";
-        }, 2000);
+        }, 1000);
     });
 
     document.querySelectorAll(".form__input").forEach(inputElement => {
