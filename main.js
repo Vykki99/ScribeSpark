@@ -63,10 +63,33 @@ document.addEventListener("DOMContentLoaded", () => {
     createAccountForm.addEventListener("submit", e => {
         e.preventDefault();
 
+        // Validate the form fields
+        const username = document.getElementById('signupUsername').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        if (!username) {
+            setInputError(document.getElementById('signupUsername'), "Username is required");
+            return;
+        }
+
+        if (!email) {
+            setInputError(document.getElementById('signupEmail'), "Email is required");
+            return;
+        }
+
+        if (!password) {
+            setInputError(document.getElementById('signupPassword'), "Password is required");
+            return;
+        }
+
+        if (password!== confirmPassword) {
+            setInputError(document.getElementById('confirmPassword'), "Passwords do not match");
+            return;
+        }
+
         // Perform your AJAX/Fetch sign up
-        const username = document.getElementById('signupUsername').value;
-        const email = document.getElementById('signupEmail').value;
-        const password = document.getElementById('signupPassword').value;
         const hashedPassword = sha256(password);
 
         localStorage.setItem('username', username);
@@ -78,6 +101,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Show success message
         setFormMessage(createAccountForm, "Sign up successful");
+
+        // Redirect to login screen
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 2000);
     });
 
     document.querySelectorAll(".form__input").forEach(inputElement => {
