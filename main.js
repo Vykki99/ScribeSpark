@@ -76,8 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     // Show success message
                     setFormMessage(loginForm, "Login successful");
+
+                    // Redirect to mainstream screen
+                    setTimeout(() => {
+                        window.location.href = "mainstream.html";
+                    }, 750);
                     break;
-                    
+
                 } else {
                     // Show error message
                     setFormMessage(loginForm, "Invalid password", "form__message--error");
@@ -141,10 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Show success message
         setFormMessage(createAccountForm, "Sign up successful");
 
-        // Redirect to login screen
+        // Redirect to mainstream screen
         setTimeout(() => {
-            window.location.href = "index.html";
-        }, 1000);
+            window.location.href = "mainstream.html";
+        }, 750);
     });
 
     document.querySelectorAll(".form__input").forEach(inputElement => {
